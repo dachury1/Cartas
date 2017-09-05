@@ -5,18 +5,18 @@ def mazo():
 
 def jugar(mazo):
     #barajaInicial(mazo)
-    #juegoJugador([mazo[0],mazo[1]], [mazo[2],mazo[3]], mazo[4:])
-    juegoJugador([(2,'corazon'),(4,'diamantes')], [(3,'corazon'),(3,'diamantes')], mazo[4:])
+    juegoJugador([mazo[0],mazo[1]], [mazo[2],mazo[3]], mazo[4:])
+    #juegoJugador([(2,'corazon'),(4,'diamantes')], [(3,'corazon'),(3,'diamantes')], mazo[4:])
     
    #el juego inicia con el jugador  
 def juegoJugador(cartasJugador, cartasCasa, mazo):
     mostrarCartas(cartasJugador)
     print "Su puntaje es: "
     #Se calcula el puntaje del jugador
-    print calcularMano(ordenarMano(cartasJugador),0)
-    if(calcularMano(ordenarMano(cartasJugador),0)<=21):
+    print calcularMano((cartasJugador),0)
+    if(calcularMano((cartasJugador),0)<=21):
         #Se solicita si desea seguir jugando, si no, juega la casa
-        if(raw_input("¿Quiere carta?") == "y"):        
+        if(raw_input("Â¿Quiere carta?") == "y"):        
             juegoJugador(repartirCarta(cartasJugador, mazo), cartasCasa, mazo[1:])
         else:
             juegoCasa(cartasJugador,cartasCasa,mazo)
@@ -27,9 +27,9 @@ def juegoJugador(cartasJugador, cartasCasa, mazo):
 def juegoCasa(cartasJugador,cartasCasa,mazo):
     mostrarCartas(cartasCasa)
     print "El puntaje de la Casa es: "
-    print calcularMano(ordenarMano(cartasCasa),0)
+    print calcularMano((cartasCasa),0)
 
-    if(calcularMano(ordenarMano(cartasCasa),0)==calcularMano(ordenarMano(cartasJugador),0)):
+    if(calcularMano((cartasCasa),0)==calcularMano((cartasJugador),0)):
         print "EMPATE"
         if((empate(cartasJugador,0) == empate(cartasCasa,0)) or (empate(cartasJugador,0) < empate(cartasCasa,0))):
             print "GANA LA CASA"
@@ -37,16 +37,17 @@ def juegoCasa(cartasJugador,cartasCasa,mazo):
             print "GANA EL JUGADOR"
 
     #Calcula si la casa tiene menor puntaje que el jugador    
-    elif(calcularMano(ordenarMano(cartasCasa),0)<calcularMano(ordenarMano(cartasJugador),0)):
+    elif(calcularMano((cartasCasa),0)<calcularMano((cartasJugador),0)):
         juegoCasa(cartasJugador, repartirCarta(cartasCasa, mazo), mazo[1:])
 
     #si la casa sobrepasa los 21 puntos, gana el jugador       
-    elif(calcularMano(ordenarMano(cartasCasa),0)>21):
+    elif(calcularMano((cartasCasa),0)>21):
        print "GANA EL JUGADOR"
 
     else:
         print "GANA LA CASA"
 
+#determina la cantidad de cartas rojas
 def empate(mano, cantidad):
         if (mano[0][1]=='diamantes' or mano[0][1]=='corazon'):
             if mano[1:] != []:
@@ -71,44 +72,14 @@ def calcularMano(mano, puntaje):
 
 #Suma una nueva carta a la mano 
 def repartirCarta(cartas, mazo):    
-   return cartas+[mazo[0]]
+    if mazo[0] == 'A':
+        return cartas + [mazo[0]]
+    else:
+        return [mazo[0]]+cartas
 
 #Muestra las cartas de la mano
 def mostrarCartas(cartas):
     print cartas        
     
-def barajaInicial(mazo):
-    for x in range(0,51):    
-        print mazo[x]
-
-def ordenarMano(mano):
-    return manoNum(mano)+manoInvert(manoAlfa(mano))
-
-
-def manoNum(mano):
-    if(mano!=[]):
-        mano.sort()
-        for x in mano:
-            if(type(x[0]) is not int):
-                return mano[:mano.index(x)]
-            else:
-                return mano
-    else:
-        return []
-        
-def manoAlfa(mano):
-    if(mano!=[]):
-        mano.sort()
-        for x in mano:
-            if(type(x[0]) is not int):
-                return mano[mano.index(x):]
-            else:
-                return []
-    else:
-        return []
-def manoInvert(mano):
-    if(mano!=None):
-        mano.sort(reverse=True)
-    return mano
 
 jugar(mazo())

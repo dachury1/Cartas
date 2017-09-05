@@ -72,7 +72,7 @@ def calcularMano(mano, puntaje):
 
 #Suma una nueva carta a la mano 
 def repartirCarta(cartas, mazo):    
-    if mazo[0] == 'A':
+    if mazo[0][0] == 'A':
         return cartas + [mazo[0]]
     else:
         return [mazo[0]]+cartas
